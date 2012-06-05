@@ -80,7 +80,7 @@ class Client
     /**
      * Get errors
      *
-     * @return array
+     * @return Error\ErrorInterface[]
      */
     public function getErrors()
     {
@@ -123,9 +123,7 @@ class Client
             'errors'  => $errorsData
         )));
 
-        file_put_contents(APPLICATION_PATH . '/../logs/shiterator.log', $body);
-
-        //exec("curl --max-time 10 -d $body {$this->url} &> /dev/null &");
+        exec("curl --max-time 10 -d $body {$this->url} &> /dev/null &");
 
         return true;
     }
