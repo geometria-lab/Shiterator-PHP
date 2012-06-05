@@ -1,0 +1,21 @@
+{
+    "name": "geometria-lab/shiterator",
+    "type": "library",
+    "description": "PHP client for Shiterator https://github.com/GeometriaLab/Shiterator",
+    "keywords": [ "exceptions", "errors", "logging"],
+    "homepage": "https://github.com/GeometriaLab/Shiterator-PHP",
+    "license": "New BSD",
+    "authors": [{
+        "name": "Ivan Shumkov",
+        "email": "ivan@shumkov.ru",
+        "homepage": "http://geometria-lab.net"
+    }],
+    "require": {
+        "php": ">=5.3.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Shiterator": "library/"
+        }
+    }
+}
