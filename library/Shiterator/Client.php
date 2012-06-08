@@ -65,70 +65,6 @@ class Client
     }
 
     /**
-     * Add error
-     *
-     * @param Error\ErrorInterface $error
-     * @return Client
-     */
-    public function addError(Error\ErrorInterface $error)
-    {
-        $this->errors[] = $error;
-
-        return $this;
-    }
-
-    /**
-     * Get errors
-     *
-     * @return Error\ErrorInterface[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     * Clear errors
-     *
-     * @return Client
-     */
-    public function clearError()
-    {
-        $this->errors = array();
-
-        return $this;
-    }
-
-    /**
-     * Send errors
-     *
-     * @return boolean
-     */
-    public function sendErrors()
-    {
-        if (empty($this->errors)) {
-            return false;
-        }
-
-        $errorsData = array();
-        foreach($this->getErrors() as $error) {
-            $errorsData[] = $error->toArray();
-        }
-
-        $this->clearError();
-
-        $body = escapeshellarg(json_encode(array(
-            'secret'  => $this->secret,
-            'request' => $this->getRequest()->toArray(),
-            'errors'  => $errorsData
-        )));
-
-        exec("curl --max-time 10 -d $body {$this->url} &> /dev/null &");
-
-        return true;
-    }
-
-    /**
      * Set request
      *
      * @param Request $request
@@ -195,5 +131,91 @@ class Client
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Add error
+     *
+     * @param Error\ErrorInterface $error
+     * @return Client
+     */
+    public function addError(Error\ErrorInterface $error)
+    {
+        $this->errors[] = $error;
+
+        return $this;
+    }
+
+    /**
+     * Send error
+     *
+     * @param Error\ErrorInterface $error
+     * @return bool
+     */
+    public function sendError(Error\ErrorInterface $error)
+    {
+        return $this->sendErrorsData($error->toArray());
+    }
+
+    /**
+     * Get errors
+     *
+     * @return Error\ErrorInterface[]
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Send errors
+     *
+     * @return boolean
+     */
+    public function sendErrors()
+    {
+        if (empty($this->errors)) {
+            return false;
+        }
+
+        $errorsData = array();
+        foreach($this->getErrors() as $error) {
+            $errorsData[] = $error->toArray();
+        }
+
+        $this->clearError();
+
+        return $this->sendErrorsData($errorsData);
+    }
+
+    /**
+     * Clear errors
+     *
+     * @return Client
+     */
+    public function clearError()
+    {
+        $this->errors = array();
+
+        return $this;
+    }
+
+    /**
+     * Send errors data
+     *
+     * @param array $errorsData
+     * @return bool
+     */
+    protected function sendErrorsData(array $errorsData)
+    {
+        $body = escapeshellarg(json_encode(array(
+            'secret' => $this->secret,
+            'request' => $this->getRequest()->toArray(),
+            'errors' => $errorsData
+        )));
+
+        exec("curl --header 'Content-Type: application/json' --max-time 10 -d $body {$this->url} &> /dev/null &");
+
+        return true;
     }
 }
