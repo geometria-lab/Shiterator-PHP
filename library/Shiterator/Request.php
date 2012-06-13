@@ -29,7 +29,7 @@ class Request
     /**
      * Action
      *
-     * @var action
+     * @var string
      */
     protected $action;
 
@@ -363,7 +363,7 @@ class Request
     /**
      * Get action
      *
-     * @return action
+     * @return string
      */
     public function getAction()
     {
@@ -400,6 +400,13 @@ class Request
      */
     public function toArray()
     {
-        return get_object_vars($this);
+        $array = array();
+        foreach(get_object_vars($this) as $name => $value) {
+            if ($value !== null) {
+                $array[$name] = $value;
+            }
+        }
+
+        return $array;
     }
 }
