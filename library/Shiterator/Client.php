@@ -214,7 +214,7 @@ class Client
             'errors' => $errorsData
         )));
 
-        exec("curl --header 'Content-Type: application/json' --max-time 10 -d $body {$this->url} &> /dev/null &");
+        exec("curl --header 'Content-Type: application/json' --max-time 10 -d $body {$this->url}/errors &> /dev/null &");
 
         return true;
     }
