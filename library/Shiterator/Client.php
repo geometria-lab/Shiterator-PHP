@@ -226,8 +226,10 @@ class Client
     protected function removeProjectRootPath($error)
     {
         $error['file'] = str_replace($this->getRequest()->getProjectRoot(), '', $error['file']);
-        foreach($error['stack'] as $line) {
-            $line['file'] = str_replace($this->getRequest()->getProjectRoot(), '', $error['file']);
+        foreach($error['stack'] as &$line) {
+            $line['file'] = str_replace($this->getRequest()->getProjectRoot(), '', $line['file']);
         }
+
+        return $error;
     }
 }
