@@ -154,7 +154,7 @@ class Client
      */
     public function sendError(Error\ErrorInterface $error)
     {
-        return $this->sendErrorsData($error->toArray());
+        return $this->sendErrorsData(array($error->toArray()));
     }
 
     /**
@@ -208,14 +208,26 @@ class Client
      */
     protected function sendErrorsData(array $errorsData)
     {
+        if ($this->getRequest()->getProjectRoot() !== null) {
+            $errorsData = array_filter($errorsData, array($this, 'removeProjectRootPath'));
+        }
+
         $body = escapeshellarg(json_encode(array(
-            'secret' => $this->secret,
+            'secret'  => $this->secret,
             'request' => $this->getRequest()->toArray(),
-            'errors' => $errorsData
+            'errors'  => $errorsData
         )));
 
         exec("curl --header 'Content-Type: application/json' --max-time 10 -d $body {$this->url}/errors &> /dev/null &");
 
         return true;
+    }
+
+    protected function removeProjectRootPath($error)
+    {
+        $error['file'] = str_replace($this->getRequest()->getProjectRoot(), '', $error['file']);
+        foreach($error['stack'] as $line) {
+            $line['file'] = str_replace($this->getRequest()->getProjectRoot(), '', $error['file']);
+        }
     }
 }
