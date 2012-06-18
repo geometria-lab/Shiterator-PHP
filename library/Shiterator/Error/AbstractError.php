@@ -98,6 +98,19 @@ abstract class AbstractError implements ErrorInterface
     }
 
     /**
+     * Set stack
+     *
+     * @param array $stack
+     * @return AbstractError
+     */
+    public function setStack(array $stack)
+    {
+        $this->stack = $stack;
+
+        return $this;
+    }
+
+    /**
      * Get error as array
      *
      * @return array

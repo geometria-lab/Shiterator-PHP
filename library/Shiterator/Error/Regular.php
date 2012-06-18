@@ -19,9 +19,10 @@ abstract class Regular extends AbstractError
         $this->line    = $line;
         $this->message = "{$this->type}: {$message} on {$this->file}:{$this->line}";
 
-        $backTrace = debug_backtrace();
-        array_shift($backTrace);
-        $this->stack = $this->sanitizeBacktrace($backTrace);
+        $stack = debug_backtrace();
+        array_shift($stack);
+
+        $this->stack = $this->sanitizeBacktrace($stack);
     }
 }
 

@@ -295,6 +295,14 @@ class ErrorHandler
     {
         $className = 'Shiterator\\Error\\' . static::$errorTypes[$errorNumber];
 
-        return new $className($message, $file, $line);
+        $error = new $className($message, $file, $line);
+
+        $stack = $error->getStack();
+        array_shift($stack);
+        array_shift($stack);
+
+        $error->setStack($stack);
+
+        return $error;
     }
 }

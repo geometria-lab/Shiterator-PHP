@@ -44,6 +44,13 @@ interface ErrorInterface
 
     /**
      * @abstract
+     * @param array $stack
+     * @return ErrorInterface
+     */
+    public function setStack(array $stack);
+
+    /**
+     * @abstract
      * @return array
      */
     public function toArray();
