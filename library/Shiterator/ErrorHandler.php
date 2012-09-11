@@ -257,7 +257,9 @@ class ErrorHandler
         if ($lastError) {
             $error = $this->createRegularError($lastError['type'], $lastError['message'], $lastError['file'], $lastError['line']);
             if ($error instanceof Error\Fatal) {
-                $this->addError($error);
+                if (strpos($lastError['message'], 'Uncaught exception') !== 0) {
+                    $this->addError($error);
+                }
                 $this->getClient()->sendErrors();
             }
         }
