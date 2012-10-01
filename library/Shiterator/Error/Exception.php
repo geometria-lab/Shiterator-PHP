@@ -19,9 +19,14 @@ class Exception extends AbstractError implements Fatal
      */
     protected $exception;
 
+    /**
+     * Constructor
+     *
+     * @param \Exception $exception
+     */
     public function __construct(\Exception $exception)
     {
-        $this->exception = $exception;
+        $this->setException($exception);
 
         $this->type    = get_class($exception);
         $this->file    = $exception->getFile();
@@ -30,6 +35,24 @@ class Exception extends AbstractError implements Fatal
         $this->stack   = $this->sanitizeBacktrace($exception->getTrace());
     }
 
+    /**
+     * Set exception
+     *
+     * @param \Exception $exception
+     * @return Exception
+     */
+    public function setException(\Exception $exception)
+    {
+        $this->exception = $exception;
+
+        return $this;
+    }
+
+    /**
+     * Get exception
+     *
+     * @return \Exception
+     */
     public function getException()
     {
         return $this->exception;
