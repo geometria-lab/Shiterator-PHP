@@ -180,7 +180,7 @@ class ErrorHandler
     /**
      * Set callback
      *
-     * @param callback|null $callback
+     * @param \callback|null $callback
      * @throws Exception
      * @return ErrorHandler
      */
